@@ -1,0 +1,46 @@
+{
+  "name": "vad-manipulasyon-araci",
+  "version": "1.0.0",
+  "main": "stage/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:py": "pyinstaller --noconsole --onefile engine/srv.py --distpath ./bin --name kernel",
+    "build:js": "javascript-obfuscator core --output stage --compact true --self-defending true && copy view\\* stage\\",
+    "dist": "npm run build:py && npm run build:js && electron-builder"
+  },
+  "devDependencies": { "electron": "^28.3.3", "electron-builder": "^24.13.3", "javascript-obfuscator": "^4.1.0" },
+  "build": {
+  "appId": "com.memotaz.vad.shield",
+  "asar": true,
+  "files": [
+    "stage/**/*",
+    "assets/**/*",
+    "node_modules/**/*",
+    "package.json",
+    "!v_ext_bridge/**/*"
+  ],
+  "extraResources": [
+    {
+      "from": "bin/kernel.exe",
+      "to": "srv_bin/kernel.exe"
+    },
+    {
+      "from": "assets/icon.ico",
+      "to": "assets/icon.ico"
+    }
+  ],
+  "win": {
+    "target": "nsis",
+    "icon": "assets/icon.ico",
+    "requestedExecutionLevel": "requireAdministrator"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "installerIcon": "assets/icon.ico",
+    "uninstallerIcon": "assets/icon.ico",
+    "installerHeaderIcon": "assets/icon.ico",
+    "shortcutName": "VAD Manipulasyon Aracı"
+  }
+  }  
+}
